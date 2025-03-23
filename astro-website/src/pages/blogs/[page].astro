@@ -1,0 +1,58 @@
+---
+import BlogPostIndexItem from "@/components/blogs/BlogPostIndexItem.astro";
+import Pagination from "@/components/global/Pagination.astro";
+import { getAllBlogs } from "@/content/blogs";
+import Layout from "@/layouts/Layout.astro";
+import { getDate, getFullYear, getMonth } from "@/utils/date";
+import type { PaginateFunction } from "astro";
+
+export async function getStaticPaths({ paginate }: { paginate: PaginateFunction }) {
+    const blogs = await getAllBlogs();
+
+    const paths: any[] = [];
+
+    blogs.forEach((blog) => {
+        paths.push({ params: { year: getFullYear(blog.date), month: getMonth(blog.date), date: getDate(blog.date), slug: blog.slug } })
+    })
+
+    return paginate(paths, { pageSize: 8 });
+}
+
+const { page } = Astro.props;
+const blogs: BlogPost[] = await getAllBlogs();
+---
+
+<Layout
+    title="Blog Posts"
+    description="You can read about my interests here. In these blog posts, I talk about technology, development and more."
+    thumbnail={{
+        alt: "Blog Posts / itsfinniii",
+        url: "https://picsum.photos/1200/630"
+    }}
+>
+    <div class="flex flex-col container mx-auto p-8">
+        <h1 class="sm:text-6xl text-4xl font-bold mb-2 mt-8">Blogs</h1>
+        <p class="text-lg mb-16">Here, I post my blog posts talking about a lot of topics: programming, video games, and a lot of other types of things I am interested in.</p>
+
+        <div class="flex flex-col gap-8">
+        { blogs.splice(((blogs.length - 1) * 8), 8).map((blog) => (
+            <div class="mb-4">
+                <BlogPostIndexItem blog={blog} />
+            </div>
+        )) }
+        </div>
+
+        <div class="flex flex-row justify-center">
+            <Pagination links={{
+                firstUrl: page.url.first,
+                previousUrl: page.url.prev,
+                nextUrl: page.url.next,
+                lastUrl: page.url.last
+            }} numbers={{
+                first: page.start,
+                last: page.lastPage,
+                current: page.currentPage
+            }} />
+        </div>
+    </div>
+</Layout>

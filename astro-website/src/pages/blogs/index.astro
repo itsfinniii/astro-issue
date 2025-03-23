@@ -1,0 +1,43 @@
+---
+import BlogPostIndexItem from "@/components/blogs/BlogPostIndexItem.astro";
+import Pagination from "@/components/global/Pagination.astro";
+import { getAllBlogs } from "@/content/blogs";
+import Layout from "@/layouts/Layout.astro";
+
+const blogs = await getAllBlogs();
+---
+
+<Layout
+    title="Blog Posts"
+    description="You can read about my interests here. In these blog posts, I talk about technology, development and more."
+    thumbnail={{
+        alt: "Blog Posts / itsfinniii",
+        url: "https://picsum.photos/1200/630"
+    }}
+>
+    <div class="flex flex-col container mx-auto p-8">
+        <h1 class="sm:text-6xl text-4xl font-bold mb-2 mt-8">Blogs</h1>
+        <p class="text-lg mb-16">Here, I post my blog posts talking about a lot of topics: programming, video games, and a lot of other types of things I am interested in.</p>
+
+        <div class="flex flex-col gap-8">
+        { blogs.slice(0, 8).map((blog) => (
+            <div class="mb-4">
+                <BlogPostIndexItem blog={blog} />
+            </div>
+        )) }
+        </div>
+
+        <div class="flex flex-row justify-center">
+            <Pagination links={{
+                firstUrl: "",
+                previousUrl: "",
+                nextUrl: "",
+                lastUrl: ""
+            }} numbers={{
+                first: 1,
+                last: Math.ceil(blogs.length / 8),
+                current: 1
+            }} />
+        </div>
+    </div>
+</Layout>

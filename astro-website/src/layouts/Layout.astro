@@ -1,0 +1,73 @@
+---
+import '@/globals.css';
+import { Head } from 'astro-capo';
+import { theme } from '@/utils/colors';
+import Footer from "@/layouts/Footer.astro";
+import Navigation from "@/layouts/Navigation.svelte";
+import { ClientRouter } from 'astro:transitions';
+
+interface Props extends LayoutProps {};
+
+const colors = theme;
+---
+
+<!doctype html>
+<html lang="en" transition:name="root" transition:animate="none" transition:persist>
+	<head>
+		<!-- High Priority Metadata -->
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width" />
+		<title>{Astro.props.title} / itsfinniii</title>
+		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content={theme['--primary']} />
+
+		<!-- Low Priority Global Metadata -->
+		<link rel="icon" type="image/png" href="/favicon/v1/favicon-96x96.png" sizes="96x96" />
+		<link rel="icon" type="image/svg+xml" href="/favicon/v1/favicon.svg" />
+		<link rel="shortcut icon" href="/favicon/v1/favicon.ico" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/favicon/v1/apple-touch-icon.png" />
+		<meta name="apple-mobile-web-app-title" content="itsfinniii" />
+		<link rel="manifest" href="/favicon/v1/site.webmanifest" />
+
+		<link rel="sitemap" href="/sitemaps/sitemap-index.xml" />
+		<link rel="alternative" type="application/rss+xml" href="/rss.xml" title="RSS" />
+		<meta name="robots" content="max-image-preview:large" />
+
+		<!-- Page Metadata -->
+		<link rel="canonical" href="https://itsfinniii.com" />
+		<meta name="description" content={Astro.props.description} />
+
+		<meta property="og:title" content={`${Astro.props.title} / itsfinniii`} />
+		<meta property="og:type" content="website" />
+		<meta property="og:url" content="https://itsfinniii.com/" />
+		<meta property="og:locale" content="en" />
+		<meta property="og:description" content={Astro.props.description} />
+		<meta property="og:site_name" content="itsfinniii" />
+		<meta property="og:image" content={Astro.props.thumbnail.url} />
+		<meta property="og:image:alt" content={Astro.props.thumbnail.alt} />
+
+		<meta property="twitter:card" content="summary_large_image" />
+		<meta property="twitter:site" content="itsfinniii" />
+		<meta property="twitter:title" content={`${Astro.props.title} / itsfinniii`} />
+		<meta property="twitter:description" content={Astro.props.description} />
+		<meta property="twitter:image" content={Astro.props.thumbnail.url} />
+		<meta property="twitter:image:alt" content={Astro.props.thumbnail.alt} />
+
+		<!-- Scripts and Styling -->
+		<ClientRouter fallback='none' />
+	</head>
+	<body class="bg-(--background) text-(--text) flex flex-col min-h-screen" style={colors}>
+		<div class="grow">
+			<div class="static">
+				<nav>
+					<Navigation client:load />
+				</nav>
+				<main class="content static">
+					<slot />
+				</main>
+			</div>
+		</div>
+
+		<Footer />
+	</body>
+</html>

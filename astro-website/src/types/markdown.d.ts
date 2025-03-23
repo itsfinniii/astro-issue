@@ -1,0 +1,3 @@
+interface MarkdownProps {
+    text: string;
+}

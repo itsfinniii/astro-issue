@@ -1,0 +1,48 @@
+---
+interface Props extends ButtonProps {};
+
+function getContrastTextColor(hex: string): "black" | "white" {
+    // Remove the hash if it exists
+    hex = hex.replace(/^#/, "");
+    
+    // Convert shorthand hex (e.g., #abc) to full form (e.g., #aabbcc)
+    if (hex.length === 3) {
+        hex = hex.split("").map(c => c + c).join("");
+    }
+    
+    // Convert hex to RGB
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+    
+    // Calculate relative luminance
+    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    
+    // Return black or white text based on luminance
+    return luminance > 0.5 ? "black" : "white";
+}
+
+function getButtonRounding(): string {
+    if (Astro.props.rounding === "none") return "rounded-none";
+    else if (Astro.props.rounding === "rounded") return "rounded-xl";
+    else if (Astro.props.rounding === "full") return "rounded-full";
+    else return "rounded-xl";
+}
+
+const classNames: string[] = [
+    "flex flex-row justify-center items-center px-3.5 py-2",
+    "duration-200 bg-(--butc) text-(--butf) hover:bg-(--hbutc) hover:text-(--hbutf)",
+    getButtonRounding(),
+]
+
+const butc = Astro.props.color;
+const hbutc = Astro.props.hoverColor ?? Astro.props.color;
+const butf = getContrastTextColor(Astro.props.color);
+const hbutf = getContrastTextColor(Astro.props.hoverColor ?? Astro.props.color);
+---
+
+<style define:vars={{ butc, hbutc, butf, hbutf }}></style>
+
+<a href={Astro.props.url ?? undefined} class:list={classNames}>
+    {Astro.props.text}
+</a>

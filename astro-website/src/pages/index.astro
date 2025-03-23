@@ -1,0 +1,17 @@
+---
+import HomeHero from '@/components/home/HomeHero.astro';
+import LastBlogs from '@/components/home/LastBlogs.astro';
+import Layout from '@/layouts/Layout.astro';
+---
+
+<Layout
+	title="Homepage",
+	description="This is the homepage for itsfinniii: Junior Software Engineer and big fan of technology"
+	thumbnail={{
+		url: "https://picsum.photos/1200/630",
+		alt: "Homepage / itsfinniii"
+	}}
+>
+	<HomeHero />
+	<LastBlogs />
+</Layout>

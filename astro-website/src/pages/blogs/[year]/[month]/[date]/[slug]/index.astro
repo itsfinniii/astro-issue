@@ -1,0 +1,75 @@
+---
+import Markdown from '@/components/markdown/Markdown.astro';
+import Tag from '@/components/tags/Tag.astro';
+import { getAllBlogs } from '@/content/blogs';
+import { DemoBlogs } from '@/demodata/blogs';
+import Layout from '@/layouts/Layout.astro';
+import { getFullYear, getMonth, getDate, formatDate } from '@/utils/date';
+import { extractExcerpt } from '@/utils/excerpts';
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import readingTime from 'reading-time';
+
+export async function getStaticPaths() {
+    const blogs = await getAllBlogs();
+
+    const paths: any[] = [];
+
+    blogs.forEach((blog) => {
+        paths.push({ params: { year: getFullYear(blog.date), month: getMonth(blog.date), date: getDate(blog.date), slug: blog.slug } })
+    })
+
+    return paths;
+}
+
+const { slug, year, month, date } = Astro.params;
+
+const blogs = await getAllBlogs();
+
+const currentBlog = blogs.find(e => e.slug === slug);
+const time = readingTime(currentBlog!.content);
+---
+
+<Layout
+    title={currentBlog!.title}
+    description={extractExcerpt(currentBlog!.content)}
+    thumbnail={{
+        url: currentBlog!.thumbnail.thumbnailImageUrl,
+        alt: currentBlog!.thumbnail.alt
+    }}
+>
+    <div class="flex flex-col container mx-auto p-8">
+        <div class="flex flex-col">
+            <h1 class="sm:text-6xl text-5xl font-bold mb-1 mt-8">{currentBlog!.title}</h1>
+            <p class="flex flex-wrap items-center gap-2 mt-1 text-lg mb-3">
+                <span class="flex flex-row gap-1 items-center">
+                    <Icon name="mdi:calendar" color="#ffffff" width="16" height="16" />
+                    <span>{formatDate(currentBlog!.date)}</span>
+                </span>
+                <span class="w-1.5 h-1.5 bg-white rounded-full inline-block"></span>
+                <span class="flex flex-row gap-1 items-center">
+                    <Icon name="mdi:access-time" color="#ffffff" width="16" height="16" />
+                    <span>{time.text}</span>
+                </span>
+            </p>
+
+            <div class="flex flex-row flex-wrap gap-2.5 mb-10">
+                { currentBlog!.tags.map((tag) => (
+                    <Tag {...tag} />
+                )) }
+            </div>
+
+            <Image
+                src={currentBlog!.thumbnail.thumbnailImageUrl}
+                alt={currentBlog!.thumbnail.alt}
+                width={1200}
+                height={630}
+                class="rounded-xl max-w-[1000px] w-[100%] mb-8 shadow-xl"
+                transition:animate="fade"
+                transition:name={currentBlog!.id}
+            />
+
+            <Markdown text={currentBlog!.content} />
+        </div>
+    </div>
+</Layout>

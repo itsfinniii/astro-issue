@@ -1,0 +1,26 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Markdown from "@/components/markdown/Markdown.astro";
+import { getLastNow } from "@/content/now";
+import { getAllBlogs } from "@/content/blogs";
+
+const now = await getLastNow();
+---
+
+<Layout
+    title="Now",
+    description="Here you can read what I am current up to: programming, gaming, technology, cars, and more!"
+    thumbnail={{
+        url: "https://picsum.photos/1200/630",
+        alt: "Now / itsfinniii"
+    }}
+>
+    <div class="flex flex-col container mx-auto p-8">
+        <div class="flex flex-col">
+            <h1 class="sm:text-6xl text-5xl font-bold mb-2 mt-8">Now</h1>
+            <p class="text-lg mb-8">On this page, I tell what I am working on as of right now. You can read about interests, hobbys, and other things about me here.</p>
+
+            <Markdown text={now.content} />
+        </div>
+    </div>
+</Layout>

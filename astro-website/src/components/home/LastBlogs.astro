@@ -1,0 +1,22 @@
+---
+import { DemoBlogs } from "@/demodata/blogs";
+import Button from "@/components/global/Button.astro";
+import LastBlogPostItem from "./LastBlogPostItem.astro";
+import { theme } from "@/utils/colors";
+---
+
+<div class="flex flex-col justify-center container mx-auto p-16">
+    <div class="flex flex-row justify-between mb-3">
+        <h3 class="sm:text-4xl text-6xl font-bold sm:mb-4 mb-6"><span class="text-(--primary)">Last</span> news</h3>
+        <div class="invisible sm:visible">
+            <Button text="Read More" color={theme["--primary"]} hoverColor={theme['--secondary']} rounding="full" url="/blogs" />
+        </div>
+    </div>
+    
+    <div class="flex sm:flex-row flex-col justify-between sm:gap-4 gap-12">
+        { DemoBlogs.map((blog) => (
+            <LastBlogPostItem {...blog} />
+        )) }
+        <LastBlogPostItem {...DemoBlogs[0]} />
+    </div>
+</div>

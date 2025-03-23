@@ -1,0 +1,41 @@
+---
+import Pagination from "@/components/global/Pagination.astro";
+import ProjectPostIndexItem from "@/components/projects/ProjectPostIndexItem.astro";
+import { DemoBlogs } from "@/demodata/blogs";
+import Layout from "@/layouts/Layout.astro";
+---
+
+<Layout
+    title="Projects"
+    description="You can read about my projects I have worked on, and other big things I have been a part of."
+    thumbnail={{
+        alt: "Projects / itsfinniii",
+        url: "https://picsum.photos/1200/630"
+    }}
+>
+    <div class="flex flex-col container mx-auto p-8">
+        <h1 class="sm:text-6xl text-4xl font-bold mb-2 mt-8">Projects</h1>
+        <p class="text-lg mb-16">Here, I display projects I have worked on, and other big things I have been a part of.</p>
+
+        <div class="flex flex-col gap-8">
+        { DemoBlogs.map((project) => (
+            <div class="mb-4">
+                <ProjectPostIndexItem project={project} />
+            </div>
+        )) }
+        </div>
+
+        <div class="flex flex-row justify-center">
+            <Pagination links={{
+                firstUrl: "",
+                previousUrl: "",
+                nextUrl: "",
+                lastUrl: ""
+            }} numbers={{
+                first: 1,
+                last: DemoBlogs.length / 1,
+                current: 1
+            }} />
+        </div>
+    </div>
+</Layout>

@@ -1,0 +1,50 @@
+---
+import { formatDate } from '@/utils/date';
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+import readingTime from 'reading-time';
+import { extractExcerpt } from '@/utils/excerpts';
+import Tag from '../tags/Tag.astro';
+
+interface Props {
+    blog: BlogPost;
+}
+
+const time = readingTime(Astro.props.blog.content);
+---
+
+<a href={`/blogs/${formatDate(Astro.props.blog.date)}/${Astro.props.blog.slug}`} class="flex sm:flex-row flex-col gap-8">
+    <div class="w-auto sm:max-w-[50%]">
+        <Image
+            src={Astro.props.blog.thumbnail.thumbnailImageUrl}
+            alt={Astro.props.blog.thumbnail.alt}
+            height="1200"
+            width="630"
+            class="h-auto rounded-xl shadow-lg"
+            transition:animate="fade"
+            transition:name={Astro.props.blog.id}
+        />
+    </div>
+    <div class="sm:w-1/2 w-full">
+        <h3 class="sm:text-3xl text-2xl font-semibold">{Astro.props.blog.title}</h3>
+        <p class="flex flex-wrap items-center gap-1.5 mt-1 text-sm">
+            <span class="flex flex-row gap-1 items-center">
+                <Icon name="mdi:calendar" color="#ffffff" width="16" height="16" />
+                <span>{formatDate(Astro.props.blog.date)}</span>
+            </span>
+            <span class="w-1.5 h-1.5 bg-white rounded-full inline-block"></span>
+            <span class="flex flex-row gap-1 items-center">
+                <Icon name="mdi:access-time" color="#ffffff" width="16" height="16" />
+                <span>{time.text}</span>
+            </span>
+        </p>
+
+        <div class="flex flex-row flex-wrap gap-2.5 mt-3">
+            { Astro.props.blog.tags.map((tag) => (
+                <Tag {...tag} />
+            )) }
+        </div>
+
+        <p class="sm:mt-3 mt-3">{extractExcerpt(Astro.props.blog.content)}...</p>
+    </div>
+</a>

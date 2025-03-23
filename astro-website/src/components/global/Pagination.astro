@@ -1,0 +1,68 @@
+---
+interface Props extends PaginationProps {};
+
+function getClasses(active: boolean, clickable: boolean) {
+    const classNames: string[] = [
+        "flex justify-center items-center w-[48px] h-[48px] rounded-full p-1",
+    ]
+
+    if (active === true) {
+        classNames.push("bg-(--primary) text-black");
+    }
+
+    if (clickable === true) {
+        classNames.push("hover:bg-neutral-100 hover:text-black duration-200");
+    }
+
+    return classNames;
+}
+
+const { numbers } = Astro.props;
+---
+
+<div class="flex flex-row gap-3 py-8">
+    { (numbers.last < 8) && (
+        <>
+            { numbers.last >= 1 && (<a href={`/blogs`} class:list={getClasses(1 === numbers.current, true)}>{1}</a>) }
+            { numbers.last >= 2 && (<a href={`/blogs/${2}`} class:list={getClasses(2 === numbers.current, true)}>{2}</a>) }
+            { numbers.last >= 3 && (<a href={`/blogs/${3}`} class:list={getClasses(3 === numbers.current, true)}>{3}</a>) }
+            { numbers.last >= 4 && (<a href={`/blogs/${4}`} class:list={getClasses(4 === numbers.current, true)}>{4}</a>) }
+            { numbers.last >= 5 && (<a href={`/blogs/${5}`} class:list={getClasses(5 === numbers.current, true)}>{5}</a>) }
+            { numbers.last >= 6 && (<a href={`/blogs/${6}`} class:list={getClasses(6 === numbers.current, true)}>{6}</a>) }
+            { numbers.last >= 7 && (<a href={`/blogs/${7}`} class:list={getClasses(7 === numbers.current, true)}>{7}</a>) }
+        </>
+    ) }
+    { (numbers.last > 6) && (
+        <>
+            { numbers.current < 3 && (
+                <a href={`/blogs`} class:list={getClasses(1 === numbers.current, true)}>{1}</a>
+                <a href={`/blogs/${2}`} class:list={getClasses(2 === numbers.current, true)}>{2}</a>
+                <a href={`/blogs/${3}`} class:list={getClasses(3 === numbers.current, true)}>{3}</a>
+                <a href={`/blogs/${4}`} class:list={getClasses(4 === numbers.current, true)}>{4}</a>
+                <div class:list={getClasses(false, false)}>...</div>
+                <a href={`/blogs/${numbers.last - 1}`} class:list={getClasses(numbers.last - 1 === numbers.current, true)}>{numbers.last - 1}</a>
+                <a href={`/blogs/${numbers.last}`} class:list={getClasses(numbers.last === numbers.current, true)}>{numbers.last}</a>
+            ) }
+
+            { numbers.current > numbers.last - 3 && (
+                <a href={`/blogs`} class:list={getClasses(1 === numbers.current, true)}>{1}</a>
+                <a href={`/blogs/${2}`} class:list={getClasses(2 === numbers.current, true)}>{2}</a>
+                <div class:list={getClasses(false, false)}>...</div>
+                <a href={`/blogs/${numbers.last - 3}`} class:list={getClasses(numbers.last - 3 === numbers.current, true)}>{numbers.last - 3}</a>
+                <a href={`/blogs/${numbers.last - 2}`} class:list={getClasses(numbers.last - 2 === numbers.current, true)}>{numbers.last - 2}</a>
+                <a href={`/blogs/${numbers.last - 1}`} class:list={getClasses(numbers.last - 1 === numbers.current, true)}>{numbers.last - 1}</a>
+                <a href={`/blogs/${numbers.last}`} class:list={getClasses(numbers.last === numbers.current, true)}>{numbers.last}</a>
+            ) }
+
+            { ((numbers.current < 3 === false) && (numbers.current > numbers.last - 3) === false) && (
+                <a href={`/blogs`} class:list={getClasses(1 === numbers.current, true)}>{1}</a>
+                <div class:list={getClasses(false, false)}>...</div>
+                <a href={`/blogs/${numbers.current - 1}`} class:list={getClasses(numbers.current - 1 === numbers.current, true)}>{numbers.current - 1}</a>
+                <a href={`/blogs/${numbers.current}`} class:list={getClasses(numbers.current === numbers.current, true)}>{numbers.current}</a>
+                <a href={`/blogs/${numbers.current + 1}`} class:list={getClasses(numbers.current + 1 === numbers.current, true)}>{numbers.current + 1}</a>
+                <div class:list={getClasses(false, false)}>...</div>
+                <a href={`/blogs/${numbers.last}`} class:list={getClasses(numbers.last === numbers.current, true)}>{numbers.last}</a>
+            ) }
+        </>
+    ) }
+</div>

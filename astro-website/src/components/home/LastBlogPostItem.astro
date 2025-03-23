@@ -1,0 +1,33 @@
+---
+import { formatDate } from '@/utils/date'
+import { Icon } from 'astro-icon/components'
+import { Image } from 'astro:assets'
+import readingTime from 'reading-time';
+
+interface Props extends BlogPost {};
+
+const time = readingTime(Astro.props.content);
+---
+
+<a href={`/blogs/${formatDate(Astro.props.date)}/${Astro.props.slug}`} class="flex flex-col sm:max-w-[32%]">
+    <Image
+        src={Astro.props.thumbnail.thumbnailImageUrl}
+        alt={Astro.props.thumbnail.alt}
+        width={1200}
+        height={630}
+        class="rounded-xl shadow-lg"
+    />
+    
+    <h4 class="text-xl font-bold mt-3.5">{Astro.props.title}</h4>
+    <p class="flex flex-wrap items-center gap-1.5 mt-1 text-sm">
+        <span class="flex flex-row gap-1 items-center">
+            <Icon name="mdi:calendar" color="#ffffff" width="16" height="16" />
+            <span>{formatDate(Astro.props.date)}</span>
+        </span>
+        <span class="w-1.5 h-1.5 bg-white rounded-full inline-block"></span>
+        <span class="flex flex-row gap-1 items-center">
+            <Icon name="mdi:access-time" color="#ffffff" width="16" height="16" />
+            <span>{time.text}</span>
+        </span>
+    </p>
+</a>

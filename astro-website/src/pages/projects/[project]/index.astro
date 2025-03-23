@@ -1,0 +1,68 @@
+---
+import Markdown from '@/components/markdown/Markdown.astro';
+import Tag from '@/components/tags/Tag.astro';
+import { DemoBlogs } from '@/demodata/blogs';
+import Layout from '@/layouts/Layout.astro';
+import { getFullYear, getMonth, getDate, formatDate } from '@/utils/date';
+import { extractExcerpt } from '@/utils/excerpts';
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import readingTime from 'reading-time';
+
+export function getStaticPaths() {
+    const paths: any[] = [];
+
+    DemoBlogs.forEach((project) => {
+        paths.push({ params: { project: project.slug } })
+    })
+
+    return paths;
+}
+
+const { project } = Astro.params;
+
+const currentProject = DemoBlogs.find(e => e.slug === project);
+const time = readingTime(currentProject!.content);
+---
+
+<Layout
+    title={currentProject!.title}
+    description={extractExcerpt(currentProject!.content)}
+    thumbnail={{
+        url: currentProject!.thumbnail.thumbnailImageUrl,
+        alt: currentProject!.thumbnail.alt
+    }}
+>
+    <div class="flex flex-col container mx-auto p-8">
+        <div class="flex flex-col">
+            <h1 class="sm:text-6xl text-5xl font-bold mb-1 mt-8">{currentProject!.title}</h1>
+            <p class="flex flex-wrap items-center gap-2 mt-1 text-lg mb-3">
+                <span class="flex flex-row gap-1 items-center">
+                    <Icon name="mdi:calendar" color="#ffffff" width="16" height="16" />
+                    <span>{formatDate(currentProject!.date)}</span>
+                </span>
+                <span class="w-1.5 h-1.5 bg-white rounded-full inline-block"></span>
+                <span class="flex flex-row gap-1 items-center">
+                    <Icon name="mdi:access-time" color="#ffffff" width="16" height="16" />
+                    <span>{time.text}</span>
+                </span>
+            </p>
+
+            <div class="flex flex-row flex-wrap gap-2.5 mb-10">
+                { currentProject!.tags.map((tag) => (
+                    <Tag {...tag} />
+                )) }
+            </div>
+
+            <Image
+                src={currentProject!.thumbnail.thumbnailImageUrl}
+                alt={currentProject!.thumbnail.alt}
+                width={1200}
+                height={630}
+                class="rounded-xl max-w-[1000px] w-[100%] mb-8 shadow-lg"
+            />
+
+            <Markdown text={currentProject!.content} />
+        </div>
+    </div>
+</Layout>

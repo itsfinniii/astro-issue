@@ -1,0 +1,44 @@
+---
+import hljs from "highlight.js";
+import HighlightJS from "markdown-it-highlightjs";
+import MarkdownIt from "markdown-it";
+
+interface Props extends MarkdownProps {};
+
+const opts = {
+    hljs: hljs,
+};
+
+var md = new MarkdownIt({})
+    .use(HighlightJS, opts)
+
+const classes: string[] = [
+    // Anchors
+    "prose-a:underline prose-a:duration-200 prose-a:text-(--primary) prose-a:hover:text-(--secondary)",
+    // Headers
+    "prose-headings:font-bold prose-headings:mt-6 prose-headings:mb-1 prose-headings:mt-4",
+    "prose-h1:text-3xl",
+    "prose-h2:text-2xl",
+    "prose-h3:text-1xl",
+    "prose-h4:text-xl",
+    "prose-h5:text-xl",
+    "prose-h6:text-lg",
+    // Code Blocks
+    "prose-pre:my-6",
+    "prose-code:rounded-lg",
+    // List
+    "prose-ul:list-disc prose-ul:list-inside prose-ul:mt-1.5 prose-ul:mb-3 prose-ul:pl-2",
+    // Table
+    "prose-table:my-6",
+    "prose-th:pe-10 prose-th:py-0.5 prose-th:text-lg",
+    "prose-tr:border-b prose-tr:p-2 prose-tr:border-b-neutral-600",
+    "prose-td:py-0.5",
+];
+---
+
+<link href="/css/atom-one-dark.css" rel="stylesheet" />
+<link href="/css/blogpost-styling.css" rel="stylesheet" />
+
+<div class="max-w-[800px]">
+    <div class:list={classes} set:html={md.render(Astro.props.text)} />
+</div>
