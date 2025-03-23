@@ -1,13 +1,14 @@
 ---
 import BlogPostIndexItem from "@/components/blogs/BlogPostIndexItem.astro";
 import Pagination from "@/components/global/Pagination.astro";
-import { getAllBlogs } from "@/content/blogs";
+//import { getAllBlogs } from "@/content/blogs";
+import { DemoBlogs } from "@/demodata/blogs";
 import Layout from "@/layouts/Layout.astro";
 import { getDate, getFullYear, getMonth } from "@/utils/date";
 import type { PaginateFunction } from "astro";
 
 export async function getStaticPaths({ paginate }: { paginate: PaginateFunction }) {
-    const blogs = await getAllBlogs();
+    const blogs = DemoBlogs;
 
     const paths: any[] = [];
 
@@ -19,7 +20,7 @@ export async function getStaticPaths({ paginate }: { paginate: PaginateFunction 
 }
 
 const { page } = Astro.props;
-const blogs: BlogPost[] = await getAllBlogs();
+const blogs: BlogPost[] = DemoBlogs;
 ---
 
 <Layout

@@ -1,10 +1,11 @@
 ---
 import BlogPostIndexItem from "@/components/blogs/BlogPostIndexItem.astro";
 import Pagination from "@/components/global/Pagination.astro";
-import { getAllBlogs } from "@/content/blogs";
+//import { getAllBlogs } from "@/content/blogs";
+import { DemoBlogs } from "@/demodata/blogs";
 import Layout from "@/layouts/Layout.astro";
 
-const blogs = await getAllBlogs();
+// const blogs = await getAllBlogs();
 ---
 
 <Layout
@@ -20,7 +21,7 @@ const blogs = await getAllBlogs();
         <p class="text-lg mb-16">Here, I post my blog posts talking about a lot of topics: programming, video games, and a lot of other types of things I am interested in.</p>
 
         <div class="flex flex-col gap-8">
-        { blogs.slice(0, 8).map((blog) => (
+        { DemoBlogs.slice(0, 8).map((blog) => (
             <div class="mb-4">
                 <BlogPostIndexItem blog={blog} />
             </div>
@@ -35,7 +36,7 @@ const blogs = await getAllBlogs();
                 lastUrl: ""
             }} numbers={{
                 first: 1,
-                last: Math.ceil(blogs.length / 8),
+                last: Math.ceil(DemoBlogs.length / 8),
                 current: 1
             }} />
         </div>

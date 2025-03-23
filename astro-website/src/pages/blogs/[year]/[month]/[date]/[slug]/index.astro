@@ -1,7 +1,7 @@
 ---
 import Markdown from '@/components/markdown/Markdown.astro';
 import Tag from '@/components/tags/Tag.astro';
-import { getAllBlogs } from '@/content/blogs';
+//import { getAllBlogs } from '@/content/blogs';
 import { DemoBlogs } from '@/demodata/blogs';
 import Layout from '@/layouts/Layout.astro';
 import { getFullYear, getMonth, getDate, formatDate } from '@/utils/date';
@@ -11,7 +11,7 @@ import { Image } from 'astro:assets';
 import readingTime from 'reading-time';
 
 export async function getStaticPaths() {
-    const blogs = await getAllBlogs();
+    const blogs = DemoBlogs;
 
     const paths: any[] = [];
 
@@ -24,7 +24,7 @@ export async function getStaticPaths() {
 
 const { slug, year, month, date } = Astro.params;
 
-const blogs = await getAllBlogs();
+const blogs = DemoBlogs;
 
 const currentBlog = blogs.find(e => e.slug === slug);
 const time = readingTime(currentBlog!.content);
