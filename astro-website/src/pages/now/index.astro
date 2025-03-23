@@ -3,8 +3,6 @@ import Layout from "@/layouts/Layout.astro";
 import Markdown from "@/components/markdown/Markdown.astro";
 import { getLastNow } from "@/content/now";
 import { getAllBlogs } from "@/content/blogs";
-
-const now = await getLastNow();
 ---
 
 <Layout
@@ -20,7 +18,7 @@ const now = await getLastNow();
             <h1 class="sm:text-6xl text-5xl font-bold mb-2 mt-8">Now</h1>
             <p class="text-lg mb-8">On this page, I tell what I am working on as of right now. You can read about interests, hobbys, and other things about me here.</p>
 
-            <Markdown text={now.content} />
+            <Markdown text={"Test"} />
         </div>
     </div>
 </Layout>
